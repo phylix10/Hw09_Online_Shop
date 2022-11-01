@@ -333,39 +333,44 @@ public class App {
         if (mainService.showCartDetailForLogin().size() != 5) {
             boolean flag = true;
 
-            while (flag) {
-                mainService.showAllProduct();
+            try {
+                while (flag) {
+                    mainService.showAllProduct();
 
-                System.out.print("Please enter the desired product ID: ");
-                int productId = scanner.nextInt();
-                scanner.nextLine();
-
-                System.out.print("Enter the desired number of items (Pay attention to the stock): ");
-                int productCount = scanner.nextInt();
-                scanner.nextLine();
-
-                Product product = mainService.showProductPrice(productId);
-                int totalPrice = productCount * product.getPrice();
-
-                try {
-                    mainService.addProductToCartForLogin(productId, productCount, totalPrice);
-                    System.out.println("add product was successfully");
-                } catch (RuntimeException e) {
-                    System.out.println(e.getMessage());
-                }
-
-                if (mainService.showCartDetailForLogin().size() == 5) {
-                    System.out.println("You have added five products to the cart!");
-                    flag = false;
-                } else {
-                    System.out.print("If you don't want to enter another item, enter 0 to exit and enter 1 to continue: ");
-                    int exit = scanner.nextInt();
+                    System.out.print("Please enter the desired product ID: ");
+                    int productId = scanner.nextInt();
                     scanner.nextLine();
 
-                    if (exit == 0) {
+                    System.out.print("Enter the desired number of items (Pay attention to the stock): ");
+                    int productCount = scanner.nextInt();
+                    scanner.nextLine();
+
+                    Product product = mainService.showProductPrice(productId);
+                    int totalPrice = productCount * product.getPrice();
+
+                    try {
+                        mainService.addProductToCartForLogin(productId, productCount, totalPrice);
+                        System.out.println("add product was successfully");
+                    } catch (RuntimeException e) {
+                        System.out.println(e.getMessage());
+                    }
+
+                    if (mainService.showCartDetailForLogin().size() == 5) {
+                        System.out.println("You have added five products to the cart!");
                         flag = false;
+                    } else {
+                        System.out.print("If you don't want to enter another item, enter 0 to exit and enter 1 to continue: ");
+                        int exit = scanner.nextInt();
+                        scanner.nextLine();
+
+                        if (exit == 0) {
+                            flag = false;
+                        }
                     }
                 }
+            }
+            catch (RuntimeException e){
+                System.out.println(e.getMessage());
             }
         } else {
             System.out.println("Your shopping cart is full!");
