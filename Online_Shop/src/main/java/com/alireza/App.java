@@ -439,7 +439,6 @@ public class App {
 
     public static void editProduct(MainService mainService) {
         boolean flag = true;
-
         while (flag) {
 
             printEditProductMenu();
@@ -469,78 +468,93 @@ public class App {
     }
 
     public static void addProduct(MainService mainService) {
-        System.out.print("Enter the product name: ");
-        String name = scanner.nextLine();
-
-        mainService.showAllCategory();
-
-        System.out.print("Enter the category id: ");
-        int categoryId = scanner.nextInt();
-        scanner.nextLine();
-
-        System.out.print("Enter the product stock: ");
-        int stock = scanner.nextInt();
-        scanner.nextLine();
-
-        System.out.print("Enter the product price: ");
-        int price = scanner.nextInt();
-        scanner.nextLine();
-
-        Categories categories = new Categories(categoryId);
-        Product product = new Product(name, categories, stock, price);
         try {
-            if (mainService.addProduct(product)) {
-                System.out.println("create product was successfully");
+            System.out.print("Enter the product name: ");
+            String name = scanner.nextLine();
+
+            mainService.showAllCategory();
+
+            System.out.print("Enter the category id: ");
+            int categoryId = scanner.nextInt();
+            scanner.nextLine();
+
+            System.out.print("Enter the product stock: ");
+            int stock = scanner.nextInt();
+            scanner.nextLine();
+
+            System.out.print("Enter the product price: ");
+            int price = scanner.nextInt();
+            scanner.nextLine();
+
+            Categories categories = new Categories(categoryId);
+            Product product = new Product(name, categories, stock, price);
+            try {
+                if (mainService.addProduct(product)) {
+                    System.out.println("create product was successfully");
+                }
+            } catch (RuntimeException e) {
+                System.out.println(e.getMessage());
             }
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e){
             System.out.println(e.getMessage());
         }
     }
 
     public static void editProductDetail(MainService mainService) {
-        mainService.showAllProduct();
-
-        System.out.print("Enter the ID of the product you want to edit: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
-
-        System.out.print("Enter the product name: ");
-        String name = scanner.nextLine();
-
-        mainService.showAllCategory();
-
-        System.out.print("Enter the category id: ");
-        int categoryId = scanner.nextInt();
-        scanner.nextLine();
-
-        System.out.print("Enter the product stock: ");
-        int stock = scanner.nextInt();
-        scanner.nextLine();
-
-        System.out.print("Enter the product price: ");
-        int price = scanner.nextInt();
-        scanner.nextLine();
-
-        Categories categories = new Categories(categoryId);
-        Product product = new Product(id, name, categories, stock, price);
-
         try {
-            mainService.editProductDetail(product);
-        } catch (RuntimeException e) {
+            mainService.showAllProduct();
+
+            System.out.print("Enter the ID of the product you want to edit: ");
+            int id = scanner.nextInt();
+            scanner.nextLine();
+
+            System.out.print("Enter the product name: ");
+            String name = scanner.nextLine();
+
+            mainService.showAllCategory();
+
+            System.out.print("Enter the category id: ");
+            int categoryId = scanner.nextInt();
+            scanner.nextLine();
+
+            System.out.print("Enter the product stock: ");
+            int stock = scanner.nextInt();
+            scanner.nextLine();
+
+            System.out.print("Enter the product price: ");
+            int price = scanner.nextInt();
+            scanner.nextLine();
+
+            Categories categories = new Categories(categoryId);
+            Product product = new Product(id, name, categories, stock, price);
+
+            try {
+                mainService.editProductDetail(product);
+            } catch (RuntimeException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        catch (RuntimeException e){
             System.out.println(e.getMessage());
         }
     }
 
     public static void deleteProduct(MainService mainService) {
-        mainService.showAllProduct();
-
-        System.out.print("Enter the ID of the product you want to delete: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
-
         try {
-            mainService.deleteProduct(id);
-        } catch (RuntimeException e) {
+            mainService.showAllProduct();
+
+            System.out.print("Enter the ID of the product you want to delete: ");
+            int id = scanner.nextInt();
+            scanner.nextLine();
+
+            try {
+                mainService.deleteProduct(id);
+            } catch (RuntimeException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        catch (RuntimeException e){
             System.out.println(e.getMessage());
         }
     }
@@ -574,43 +588,53 @@ public class App {
     }
 
     public static void addCategory(MainService mainService) {
-        System.out.print("Enter the category name: ");
-        String category = scanner.next().toUpperCase();
-        scanner.nextLine();
-
-        System.out.print("Enter the sub category name: ");
-        String subCategory = scanner.next().toUpperCase();
-        scanner.nextLine();
-
-        Categories categories = new Categories(category, subCategory);
         try {
-            if (mainService.addCategory(categories)) {
-                System.out.println("add category was successfully");
+            System.out.print("Enter the category name: ");
+            String category = scanner.next().toUpperCase();
+            scanner.nextLine();
+
+            System.out.print("Enter the sub category name: ");
+            String subCategory = scanner.next().toUpperCase();
+            scanner.nextLine();
+
+            Categories categories = new Categories(category, subCategory);
+            try {
+                if (mainService.addCategory(categories)) {
+                    System.out.println("add category was successfully");
+                }
+            } catch (RuntimeException e) {
+                System.out.println(e.getMessage());
             }
-        } catch (RuntimeException e) {
+        }
+        catch (RuntimeException e){
             System.out.println(e.getMessage());
         }
     }
 
     public static void editCategoryDetail(MainService mainService) {
-        mainService.showAllCategory();
-
-        System.out.print("Enter the ID of the category you want to edit: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
-
-        System.out.print("Enter the category name: ");
-        String category = scanner.next().toUpperCase();
-        scanner.nextLine();
-
-        System.out.print("Enter the sub category name: ");
-        String subCategory = scanner.next().toUpperCase();
-        scanner.nextLine();
-
-        Categories categories = new Categories(id, category, subCategory);
         try {
-            mainService.editCategory(categories);
-        } catch (RuntimeException e) {
+            mainService.showAllCategory();
+
+            System.out.print("Enter the ID of the category you want to edit: ");
+            int id = scanner.nextInt();
+            scanner.nextLine();
+
+            System.out.print("Enter the category name: ");
+            String category = scanner.next().toUpperCase();
+            scanner.nextLine();
+
+            System.out.print("Enter the sub category name: ");
+            String subCategory = scanner.next().toUpperCase();
+            scanner.nextLine();
+
+            Categories categories = new Categories(id, category, subCategory);
+            try {
+                mainService.editCategory(categories);
+            } catch (RuntimeException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        catch (RuntimeException e){
             System.out.println(e.getMessage());
         }
     }
