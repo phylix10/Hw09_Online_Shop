@@ -6,6 +6,7 @@ import com.alireza.model.User;
 import com.alireza.model.enumeration.Role;
 import com.alireza.service.MainService;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class App {
@@ -17,29 +18,24 @@ public class App {
         boolean flag = true;
 
         while (flag) {
-            try {
-                printMainMenu();
-                System.out.print("Choose an option: ");
-                int input = scanner.nextInt();
-                scanner.nextLine();
+            printMainMenu();
+            System.out.print("Choose an option: ");
+            int input = scanner.nextInt();
+            scanner.nextLine();
 
-                switch (input) {
-                    case 1:
-                        register(mainService);
-                        break;
-                    case 2:
-                        login(mainService);
-                        break;
-                    case 3:
-                        flag = false;
-                        break;
-                    default:
-                        System.out.println("You entered the wrong option!");
-                        break;
-                }
-            } catch (RuntimeException e) {
-                System.out.println("invalid option");
-                flag = false;
+            switch (input) {
+                case 1:
+                    register(mainService);
+                    break;
+                case 2:
+                    login(mainService);
+                    break;
+                case 3:
+                    flag = false;
+                    break;
+                default:
+                    System.out.println("You entered the wrong option!");
+                    break;
             }
         }
     }
@@ -154,39 +150,44 @@ public class App {
         if (mainService.showCartDetailForRegister().size() != 5) {
             boolean flag = true;
 
-            while (flag) {
-                mainService.showAllProduct();
+            try {
+                while (flag) {
+                    mainService.showAllProduct();
 
-                System.out.print("Please enter the desired product ID: ");
-                int productId = scanner.nextInt();
-                scanner.nextLine();
-
-                System.out.print("Enter the desired number of items (Pay attention to the stock): ");
-                int productCount = scanner.nextInt();
-                scanner.nextLine();
-
-                Product product = mainService.showProductPrice(productId);
-                int totalPrice = productCount * product.getPrice();
-
-                try {
-                    mainService.addProductToCartForRegister(productId, productCount, totalPrice);
-                    System.out.println("add product was successfully");
-                } catch (RuntimeException e) {
-                    System.out.println(e.getMessage());
-                }
-
-                if (mainService.showCartDetailForRegister().size() == 5) {
-                    System.out.println("You have added five products to the cart!");
-                    flag = false;
-                } else {
-                    System.out.print("If you don't want to enter another item, enter 0 to exit and enter 1 to continue: ");
-                    int exit = scanner.nextInt();
+                    System.out.print("Please enter the desired product ID: ");
+                    int productId = scanner.nextInt();
                     scanner.nextLine();
 
-                    if (exit == 0) {
+                    System.out.print("Enter the desired number of items (Pay attention to the stock): ");
+                    int productCount = scanner.nextInt();
+                    scanner.nextLine();
+
+                    Product product = mainService.showProductPrice(productId);
+                    int totalPrice = productCount * product.getPrice();
+
+                    try {
+                        mainService.addProductToCartForRegister(productId, productCount, totalPrice);
+                        System.out.println("add product was successfully");
+                    } catch (RuntimeException e) {
+                        System.out.println(e.getMessage());
+                    }
+
+                    if (mainService.showCartDetailForRegister().size() == 5) {
+                        System.out.println("You have added five products to the cart!");
                         flag = false;
+                    } else {
+                        System.out.print("If you don't want to enter another item, enter 0 to exit and enter 1 to continue: ");
+                        int exit = scanner.nextInt();
+                        scanner.nextLine();
+
+                        if (exit == 0) {
+                            flag = false;
+                        }
                     }
                 }
+            }
+            catch (InputMismatchException e){
+                System.out.print("please enter an number: ");
             }
         } else {
             System.out.println("Your shopping cart is full!");
@@ -226,17 +227,22 @@ public class App {
     }
 
     public static void deleteProductFromCartForRegister(MainService mainService) {
-        mainService.showCartForRegister();
-
-        System.out.print("Enter the Id of the product you want to delete: ");
-        int productId = scanner.nextInt();
-        scanner.nextLine();
-
         try {
-            mainService.deleteProductFromCart(productId);
-            System.out.println("Delete Product was done successfully");
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
+            mainService.showCartForRegister();
+
+            System.out.print("Enter the Id of the product you want to delete: ");
+            int productId = scanner.nextInt();
+            scanner.nextLine();
+
+            try {
+                mainService.deleteProductFromCart(productId);
+                System.out.println("Delete Product was done successfully");
+            } catch (RuntimeException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        catch (InputMismatchException e){
+            System.out.print("please enter an number: ");
         }
     }
 
@@ -248,8 +254,9 @@ public class App {
             mainService.updateProductStockForRegister();
 
             mainService.deleteCartForRegister();
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
+        }
+        catch (InputMismatchException e){
+                System.out.print("please enter an number: ");
         }
     }
 
@@ -369,8 +376,8 @@ public class App {
                     }
                 }
             }
-            catch (RuntimeException e){
-                System.out.println(e.getMessage());
+            catch (InputMismatchException e){
+                System.out.print("please enter an number: ");
             }
         } else {
             System.out.println("Your shopping cart is full!");
@@ -410,17 +417,22 @@ public class App {
     }
 
     public static void deleteProductFromCartForLogin(MainService mainService) {
-        mainService.showCartForLogin();
-
-        System.out.print("Enter the Id of the product you want to delete: ");
-        int productId = scanner.nextInt();
-        scanner.nextLine();
-
         try {
-            mainService.deleteProductFromCart(productId);
-            System.out.println("Delete Product was done successfully");
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
+            mainService.showCartForLogin();
+
+            System.out.print("Enter the Id of the product you want to delete: ");
+            int productId = scanner.nextInt();
+            scanner.nextLine();
+
+            try {
+                mainService.deleteProductFromCart(productId);
+                System.out.println("Delete Product was done successfully");
+            } catch (RuntimeException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        catch (InputMismatchException e){
+            System.out.print("please enter an number: ");
         }
     }
 
@@ -496,8 +508,8 @@ public class App {
                 System.out.println(e.getMessage());
             }
         }
-        catch (RuntimeException e){
-            System.out.println(e.getMessage());
+        catch (InputMismatchException e) {
+            System.out.print("please enter an number: ");
         }
     }
 
@@ -534,9 +546,8 @@ public class App {
             } catch (RuntimeException e) {
                 System.out.println(e.getMessage());
             }
-        }
-        catch (RuntimeException e){
-            System.out.println(e.getMessage());
+        } catch (InputMismatchException e) {
+            System.out.print("please enter an number: ");
         }
     }
 
@@ -553,9 +564,8 @@ public class App {
             } catch (RuntimeException e) {
                 System.out.println(e.getMessage());
             }
-        }
-        catch (RuntimeException e){
-            System.out.println(e.getMessage());
+        } catch (InputMismatchException e) {
+            System.out.print("please enter an number: ");
         }
     }
 
@@ -605,9 +615,8 @@ public class App {
             } catch (RuntimeException e) {
                 System.out.println(e.getMessage());
             }
-        }
-        catch (RuntimeException e){
-            System.out.println(e.getMessage());
+        } catch (InputMismatchException e) {
+            System.out.print("please enter an number: ");
         }
     }
 
@@ -633,9 +642,8 @@ public class App {
             } catch (RuntimeException e) {
                 System.out.println(e.getMessage());
             }
-        }
-        catch (RuntimeException e){
-            System.out.println(e.getMessage());
+        } catch (InputMismatchException e) {
+            System.out.print("please enter an number: ");
         }
     }
 }
